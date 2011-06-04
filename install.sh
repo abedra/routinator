@@ -4,7 +4,7 @@
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/4.9/packages/i386
 
 # Install essentials
-pkg_add git curl pftop alpine cvsup
+pkg_add git curl pftop alpine
 
 # Fetch this repository
 git clone git://github.com/abedra/routinator
