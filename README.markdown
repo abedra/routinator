@@ -8,7 +8,7 @@ After you run the installer, you will have a nice basic setup that is ready for 
 
 ### Getting Started
 
-Once you have OpenBSD installed, you just need to run this simple [bootstrap script](https://github.com/abedra/raw/master/install.sh) to get you going.  You can use lynx to pick it up:
+Once you have OpenBSD installed, you just need to run this simple [bootstrap script](https://github.com/abedra/routinator/raw/master/install.sh) to get you going.  You can use lynx to pick it up:
 
     lynx https://github.com/abedra/routinator/raw/master/install.sh
     
