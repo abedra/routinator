@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cp /root/pf/pf.conf.clean /etc/pf.conf
+pfctl -f /etc/pf.conf
