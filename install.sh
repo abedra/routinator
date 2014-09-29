@@ -1,18 +1,20 @@
 #!/bin/sh
 
-# Setup a path to fetch packages
+# Setup PKG_PATH
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/i386
 
 # Install essentials
-pkg_add git curl pftop mutt
+pkg_add git curl pftop
 
 # Fetch this repository
+mkdir src
+cd src
 git clone git://github.com/abedra/routinator
+cd ~
 
 # Install
 rm ~/.profile
-cp routinator/home/.profile ~
-ln -sf routinator/home/script ~/script
+ln -sf ~/src/routinator/home/.profile ~/.profile
 
 # Fetch the OpenBSD Sources
 cd /usr/src
@@ -22,7 +24,15 @@ curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.5/sys.tar.gz
 # Extract Sources
 tar xzf src.tar.gz
 tar xzf sys.tar.gz
-cd ~
 
+# Cleanup
+rm src.tar.gz
+rm sys.tar.gz
+
+cd ~
+rm install.sh
+
+# Finish
+source .profile
 echo "Setup complete. Make sure to run script/update to update your source tree."
 

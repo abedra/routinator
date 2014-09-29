@@ -19,5 +19,7 @@ case "$-" in
 	fi
 	;;
 esac
+
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/i386
 export CVSROOT=anoncvs@anoncvs1.usa.openbsd.org:/cvs
+export PATH=~/src/routinator/home/script:$PATH
