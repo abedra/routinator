@@ -4,7 +4,7 @@
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/i386
 
 # Install essentials
-pkg_add git curl pftop
+pkg_add rsync-3.1.0 git curl pftop
 
 # Fetch this repository
 mkdir src
@@ -33,6 +33,6 @@ cd ~
 rm install.sh
 
 # Finish
-source .profile
+. ./.profile
 echo "Setup complete. Make sure to run script/update to update your source tree."
 

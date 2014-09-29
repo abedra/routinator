@@ -28,8 +28,7 @@ $ sh install.sh
 This will take some time depending on your internet connection.  After
 it is done you will have the following.
 
-* `git`, `curl`, `pftop`, and `mutt` installed.
-* The routinator repository downloaded and linked into your home folder.
+* The routinator repository downloaded and linked in to root's home folder.
 * The OpenBSD source tree in place and ready to be updated.
 
 ### Usage
