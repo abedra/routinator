@@ -20,6 +20,6 @@ case "$-" in
 	;;
 esac
 
-export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/i386
+export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/amd64
 export CVSROOT=anoncvs@anoncvs1.usa.openbsd.org:/cvs
 export PATH=~/src/routinator/home/script:$PATH

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Setup PKG_PATH
-export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/i386
+export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/amd64
 
 # Install essentials
 pkg_add rsync-3.1.0 git curl pftop
