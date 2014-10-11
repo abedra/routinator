@@ -1,0 +1,7 @@
+add vether0
+add em1
+add rl0
+blocknoip vether0
+blocknoip em1
+blocknoip rl0
+up -inet6

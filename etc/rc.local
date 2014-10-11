@@ -1,0 +1,8 @@
+#       $OpenBSD: rc.local,v 1.44 2011/04/22 06:08:14 ajacoutot Exp $
+
+# Site-specific startup actions, daemons, and other things which
+# can be done AFTER your system goes into securemode.  For actions
+# which should be done BEFORE your system has gone into securemode
+# please see /etc/rc.securelevel.
+
+/usr/local/sbin/dnscrypt-proxy -a 127.0.0.1:40 -u _dnscrypt-proxy -l /dev/null -d

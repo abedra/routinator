@@ -1,0 +1,3 @@
+ntpd_flags=""
+dhcpd_flags="vether0"
+named_flags=""

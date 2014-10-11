@@ -4,7 +4,7 @@
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/amd64
 
 # Install essentials
-pkg_add rsync-3.1.0 git curl pftop
+pkg_add rsync-3.1.0 git curl pftop dnscrypt-proxy
 
 # Fetch this repository
 mkdir src
