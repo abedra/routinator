@@ -5,6 +5,9 @@
 #include <ifaddrs.h>
 
 char **interfaces;
+char ext_if[10];
+char int_if[10];
+char dhcp_if[10];
 
 int length(char *arr[]) {
   int count = 0;
@@ -46,12 +49,22 @@ void print_interfaces()
   printf("]");
 }
 
+void prompt(char *message)
+{
+  printf("%s Choices are ", message);
+  print_interfaces();
+  printf(": ");
+}
+
 int main(int argc, char **argv)
 {
   get_interfaces();
-  printf("Interfaces: ");
-  print_interfaces();
-  printf("\n");
+  prompt("Select external interface.");
+  fgets(ext_if, 10, stdin);
+  prompt("Select internal interface.");
+  fgets(int_if, 10, stdin);
+  prompt("Select DHCP interface.");
+  fgets(dhcp_if, 10, stdin);
 
   return 0;
 }
