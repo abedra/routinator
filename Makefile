@@ -1,5 +1,5 @@
 all:
-	gcc -Wall -Werror configurator.c -o configurator
+	gcc -Wall ctemplate.c configurator.c -o configurator
 
 debug:
-	gcc -g -O0 -Wall -Werror configurator.c -o configurator
+	gcc -g -O0 -Wall ctemplate.c configurator.c -o configurator

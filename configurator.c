@@ -4,6 +4,8 @@
 #include <sys/socket.h>
 #include <ifaddrs.h>
 
+#include "ctemplate.h"
+
 char **interfaces;
 char ext_if[10];
 char int_if[10];
@@ -65,6 +67,14 @@ int main(int argc, char **argv)
   fgets(int_if, 10, stdin);
   prompt("Select DHCP interface.");
   fgets(dhcp_if, 10, stdin);
+
+  TMPL_varlist *mylist;
+  FILE *pfconf;
+  pfconf = fopen("pf.conf", "w+");
+
+  mylist = TMPL_add_var(0, "ext_if", ext_if, "int_if", int_if, 0);
+  TMPL_write("pf.conf.tmpl", 0, 0, mylist, pfconf, stderr);
+  TMPL_free_varlist(mylist);
 
   return 0;
 }
