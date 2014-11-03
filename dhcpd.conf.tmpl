@@ -1,0 +1,13 @@
+# Network:		<TMPL_VAR name='subnet'>/<TMPL_VAR name='netmask'>
+# Domain name:		<TMPL_VAR name='domain'>
+# Name servers:		<TMPL_VAR name='nameservers'>
+# Default router:	<TMPL_VAR name='router'>
+# Addresses:		<TMPL_VAR name='dhcp_start'> - <TMPL_VAR name='dhcp_end'>
+
+option  domain-name "<TMPL_VAR name='domain'>";
+option  domain-name-servers <TMPL_VAR name='nameservers'>;
+
+subnet <TMPL_VAR name='subnet'> netmask <TMPL_VAR name='netmask'> {
+	option routers <TMPL_VAR name='router'>;
+	range <TMPL_VAR name='dhcp_start'> <TMPL_VAR name='dhcp_end'>;
+}

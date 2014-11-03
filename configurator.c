@@ -10,6 +10,13 @@ char **interfaces;
 char ext_if[10];
 char int_if[10];
 char dhcp_if[10];
+char domain_name[255];
+char nameservers[1024];
+char subnet[16];
+char netmask[16];
+char router[16];
+char dhcp_start[16];
+char dhcp_end[16];
 
 int length(char *arr[]) {
   int count = 0;
@@ -69,7 +76,7 @@ void write_pf_conf()
   TMPL_free_varlist(mylist);
 }
 
-int main(int argc, char **argv)
+void assign_interfaces()
 {
   get_interfaces();
   prompt("Select external interface.");
@@ -81,8 +88,61 @@ int main(int argc, char **argv)
   prompt("Select DHCP interface.");
   fgets(dhcp_if, 10, stdin);
   strtok(dhcp_if, "\n");
+}
 
+void assign_dhcp_options()
+{
+  printf("Enter domain name: ");
+  fgets(domain_name, 255, stdin);
+  strtok(domain_name, "\n");
+
+  printf("Enter nameservers: ");
+  fgets(nameservers, 1024, stdin);
+  strtok(nameservers, "\n");
+
+  printf("Enter subnet: ");
+  fgets(subnet, 16, stdin);
+  strtok(subnet, "\n");
+
+  printf("Enter netmask: ");
+  fgets(netmask, 16, stdin);
+  strtok(netmask, "\n");
+
+  printf("Enter router address: ");
+  fgets(router, 16, stdin);
+  strtok(router, "\n");
+
+  printf("Enter DHCP start: ");
+  fgets(dhcp_start, 16, stdin);
+  strtok(dhcp_start, "\n");
+
+  printf("Enter DHCP end: ");
+  fgets(dhcp_end, 16, stdin);
+  strtok(dhcp_end, "\n");
+}
+
+void write_dhcpd_conf()
+{
+  TMPL_varlist *mylist;
+  FILE *dhcpdconf;
+  dhcpdconf = fopen("dhcpd.conf", "w+");
+
+  mylist = TMPL_add_var(0, "domain", domain_name, "nameservers", nameservers, 0);
+  mylist = TMPL_add_var(mylist, "subnet", subnet, "netmask", netmask, 0);
+  mylist = TMPL_add_var(mylist, "router", router, "dhcp_start", dhcp_start, 0);
+  TMPL_add_var(mylist, "dhcp_end", dhcp_end, 0);
+
+  TMPL_write("dhcpd.conf.tmpl", 0, 0, mylist, dhcpdconf, stderr);
+  TMPL_free_varlist(mylist);
+}
+
+int main(int argc, char **argv)
+{
+  assign_interfaces();
   write_pf_conf();
+
+  assign_dhcp_options();
+  write_dhcpd_conf();
 
   return 0;
 }
