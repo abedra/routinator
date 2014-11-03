@@ -58,16 +58,8 @@ void prompt(char *message)
   printf(": ");
 }
 
-int main(int argc, char **argv)
+void write_pf_conf()
 {
-  get_interfaces();
-  prompt("Select external interface.");
-  fgets(ext_if, 10, stdin);
-  prompt("Select internal interface.");
-  fgets(int_if, 10, stdin);
-  prompt("Select DHCP interface.");
-  fgets(dhcp_if, 10, stdin);
-
   TMPL_varlist *mylist;
   FILE *pfconf;
   pfconf = fopen("pf.conf", "w+");
@@ -75,6 +67,22 @@ int main(int argc, char **argv)
   mylist = TMPL_add_var(0, "ext_if", ext_if, "int_if", int_if, 0);
   TMPL_write("pf.conf.tmpl", 0, 0, mylist, pfconf, stderr);
   TMPL_free_varlist(mylist);
+}
+
+int main(int argc, char **argv)
+{
+  get_interfaces();
+  prompt("Select external interface.");
+  fgets(ext_if, 10, stdin);
+  strtok(ext_if, "\n");
+  prompt("Select internal interface.");
+  fgets(int_if, 10, stdin);
+  strtok(int_if, "\n");
+  prompt("Select DHCP interface.");
+  fgets(dhcp_if, 10, stdin);
+  strtok(dhcp_if, "\n");
+
+  write_pf_conf();
 
   return 0;
 }
