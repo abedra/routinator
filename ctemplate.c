@@ -353,6 +353,18 @@ freetag(tagnode *tag) {
             free(t);
         }
         break;
+    case tag_text:
+      break;
+    case tag_else:
+      break;
+    case tag_endif:
+      break;
+    case tag_break:
+      break;
+    case tag_cont:
+      break;
+    case tag_endloop:
+      break;
     }
     freetag(tag->next);
     free(tag);
@@ -383,6 +395,8 @@ tagname(tag_kind kind) {
         return "TMPL_CONTINUE";
     case tag_endloop:
         return "/TMPL_LOOP";
+    case tag_text:
+      break;
     }
     return "unknown";
 }
@@ -632,6 +646,14 @@ scantag(template *t, const char *p) {
             p = scanspaces(t, t->scanptr);
         }
         break;
+    case tag_text:
+      break;
+    case tag_else:
+      break;
+    case tag_endif:
+      break;
+    case tag_endloop:
+      break;
     }
 
     /* check for end of tag */
@@ -1248,6 +1270,12 @@ walk(template *t, tagnode *tag, const TMPL_varlist *varlist) {
         walk(t2, t2->roottag, varlist);
         t->error = t2->error;
         break;
+    case tag_else:
+      break;
+    case tag_endif:
+      break;
+    case tag_endloop:
+      break;
     }
     walk(t, tag->next, varlist);
 }
