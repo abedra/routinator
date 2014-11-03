@@ -65,17 +65,6 @@ void prompt(char *message)
   printf(": ");
 }
 
-void write_pf_conf()
-{
-  TMPL_varlist *mylist;
-  FILE *pfconf;
-  pfconf = fopen("pf.conf", "w+");
-
-  mylist = TMPL_add_var(0, "ext_if", ext_if, "int_if", int_if, 0);
-  TMPL_write("pf.conf.tmpl", 0, 0, mylist, pfconf, stderr);
-  TMPL_free_varlist(mylist);
-}
-
 void assign_interfaces()
 {
   get_interfaces();
@@ -88,6 +77,17 @@ void assign_interfaces()
   prompt("Select DHCP interface.");
   fgets(dhcp_if, 10, stdin);
   strtok(dhcp_if, "\n");
+}
+
+void write_pf_conf()
+{
+  TMPL_varlist *mylist;
+  FILE *pfconf;
+  pfconf = fopen("etc/pf.conf", "w+");
+
+  mylist = TMPL_add_var(0, "ext_if", ext_if, "int_if", int_if, 0);
+  TMPL_write("templates/pf.conf.tmpl", 0, 0, mylist, pfconf, stderr);
+  TMPL_free_varlist(mylist);
 }
 
 void assign_dhcp_options()
@@ -125,14 +125,14 @@ void write_dhcpd_conf()
 {
   TMPL_varlist *mylist;
   FILE *dhcpdconf;
-  dhcpdconf = fopen("dhcpd.conf", "w+");
+  dhcpdconf = fopen("etc/dhcpd.conf", "w+");
 
   mylist = TMPL_add_var(0, "domain", domain_name, "nameservers", nameservers, 0);
   mylist = TMPL_add_var(mylist, "subnet", subnet, "netmask", netmask, 0);
   mylist = TMPL_add_var(mylist, "router", router, "dhcp_start", dhcp_start, 0);
   TMPL_add_var(mylist, "dhcp_end", dhcp_end, 0);
 
-  TMPL_write("dhcpd.conf.tmpl", 0, 0, mylist, dhcpdconf, stderr);
+  TMPL_write("templates/dhcpd.conf.tmpl", 0, 0, mylist, dhcpdconf, stderr);
   TMPL_free_varlist(mylist);
 }
 
