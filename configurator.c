@@ -17,6 +17,7 @@ char netmask[16];
 char router[16];
 char dhcp_start[16];
 char dhcp_end[16];
+char broadcast[16];
 
 int length(char *arr[]) {
   int count = 0;
@@ -68,12 +69,15 @@ void prompt(char *message)
 void assign_interfaces()
 {
   get_interfaces();
+
   prompt("Select external interface.");
   fgets(ext_if, 10, stdin);
   strtok(ext_if, "\n");
+
   prompt("Select internal interface.");
   fgets(int_if, 10, stdin);
   strtok(int_if, "\n");
+
   prompt("Select DHCP interface.");
   fgets(dhcp_if, 10, stdin);
   strtok(dhcp_if, "\n");
@@ -119,6 +123,10 @@ void assign_dhcp_options()
   printf("Enter DHCP end: ");
   fgets(dhcp_end, 16, stdin);
   strtok(dhcp_end, "\n");
+
+  printf("Enter broadcast address: ");
+  fgets(broadcast, 16, stdin);
+  strtok(broadcast, "\n");
 }
 
 void write_dhcpd_conf()
@@ -136,6 +144,22 @@ void write_dhcpd_conf()
   TMPL_free_varlist(mylist);
 }
 
+void write_internal_hostname_file()
+{
+  TMPL_varlist *mylist;
+  FILE *hostconf;
+  char *ifname;
+
+  asprintf(&ifname, "etc/hostname.%s", int_if);
+  hostconf = fopen(ifname, "w+");
+
+  mylist = TMPL_add_var(0, "router", router, "netmask", netmask, 0);
+  TMPL_add_var(mylist, "broadcast", broadcast, 0);
+
+  TMPL_write("templates/int_hostname.tmpl", 0, 0, mylist, hostconf, stderr);
+  TMPL_free_varlist(mylist);
+}
+
 int main(int argc, char **argv)
 {
   assign_interfaces();
@@ -143,6 +167,8 @@ int main(int argc, char **argv)
 
   assign_dhcp_options();
   write_dhcpd_conf();
+
+  write_internal_hostname_file();
 
   return 0;
 }
