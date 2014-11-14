@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Setup PKG_PATH
-export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.5/packages/amd64
+export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.6/packages/amd64
 
 # Install essentials
 pkg_add rsync-3.1.0 git curl pftop dnscrypt-proxy
@@ -18,8 +18,8 @@ ln -sf ~/src/routinator/home/.profile ~/.profile
 
 # Fetch the OpenBSD Sources
 cd /usr/src
-curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.5/src.tar.gz
-curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.5/sys.tar.gz
+curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.6/src.tar.gz
+curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.6/sys.tar.gz
 
 # Extract Sources
 tar xzf src.tar.gz

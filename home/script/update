@@ -1,5 +1,5 @@
 #!/bin/sh
 
 cd /usr/src
-cvs -d$CVSROOT -q up -rOPENBSD_5_5 -Pd
+cvs -d$CVSROOT -q up -rOPENBSD_5_6 -Pd
 cd ~
