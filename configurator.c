@@ -25,13 +25,14 @@ int length(char *arr[]) {
   return count;
 }
 
-void get_interfaces()
+void get_interfaces(struct ifaddrs *ifap)
 {
   int i = 0;
-  struct ifaddrs *ifap, *ifa;
+  struct ifaddrs *ifa;
   getifaddrs(&ifap);
 
   for (ifa = ifap; ifa; ifa = ifa->ifa_next) {
+    if (ifa->ifa_name == NULL) { continue; }
     if (i > 0 && ifa->ifa_name == interfaces[i - 1]) { continue; }
     if ((int)ifa->ifa_flags >= 0) { continue; }
     if (memcmp(ifa->ifa_name, "lo0", 3) == 0) { continue; }
@@ -42,8 +43,6 @@ void get_interfaces()
 
   interfaces = realloc(interfaces, sizeof(interfaces) * (i + 1));
   interfaces[i] = NULL;
-
-  freeifaddrs(ifap);
 }
 
 void print_interfaces()
@@ -66,9 +65,9 @@ void prompt(char *message)
   printf(": ");
 }
 
-void assign_interfaces()
+void assign_interfaces(struct ifaddrs *ifap)
 {
-  get_interfaces();
+  get_interfaces(ifap);
 
   prompt("Select external interface.");
   fgets(ext_if, 10, stdin);
@@ -162,13 +161,17 @@ void write_internal_hostname_file()
 
 int main(int argc, char **argv)
 {
-  assign_interfaces();
+  struct ifaddrs *ifap;
+
+  assign_interfaces(ifap);
   write_pf_conf();
 
   assign_dhcp_options();
   write_dhcpd_conf();
 
   write_internal_hostname_file();
+
+  freeifaddrs(ifap);
 
   return 0;
 }
