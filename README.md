@@ -29,8 +29,15 @@ it is done you will have the following.
 
 * The routinator repository downloaded and linked in to root's home folder.
 * The OpenBSD source tree in place and ready to be updated.
+* A fully configured router/firewall
 
-### Usage
+### Configuring your firewall
+
+During the installation process, you will be asked a number of
+questions. The configuration program will generate the necessary files
+based on the answers provided.
+
+### Additional resources
 
 ##### Updating the sources
 
@@ -50,28 +57,3 @@ $ reboot
 ```sh
 $ script/recompile_system
 ```
-
-### Configuring your firewall
-
-First you need to build the configurator:
-
-```
-make
-```
-
-Then simply run it:
-
-```
-./configurator
-```
-
-Answer the questions and the etc folder will contain the configuration for your firewall/router. Simply copy them into `/etc/`.
-
-## What's missing?
-
-There are a couple of steps missing here. Enabling ip forwarding has
-not been implemented in the configurator yet. You just need to add
-`net.inet.ip.forwarding=1` to `/etc/sysctl.conf`. Next, you need to
-enable dhcpd and tell it which interface to use. Add
-`dhcpd_flags=<interface>` to `/etc/rc.conf.local`. Reboot the machine
-and you will have a working router.
