@@ -159,6 +159,21 @@ void write_internal_hostname_file()
   TMPL_free_varlist(mylist);
 }
 
+void write_external_hostname_file()
+{
+  TMPL_varlist *mylist;
+  FILE *hostconf;
+  char *ifname;
+
+  asprintf(&ifname, "etc/hostname.%s", ext_if);
+  hostconf = fopen(ifname, "w+");
+
+  mylist = TMPL_add_var(0, "mode", "dhcp", 0);
+
+  TMPL_write("templates/ext_hostname.tmpl", 0, 0, mylist, hostconf, stderr);
+  TMPL_free_varlist(mylist);
+}
+
 void write_rc_conf_local()
 {
   TMPL_varlist *mylist;
@@ -183,6 +198,7 @@ int main(int argc, char **argv)
   write_dhcpd_conf();
   write_rc_conf_local();
 
+  write_external_hostname_file();
   write_internal_hostname_file();
 
   freeifaddrs(ifap);

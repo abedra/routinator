@@ -4,7 +4,7 @@
 export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.6/packages/amd64
 
 # Install essentials
-pkg_add rsync-3.1.0 git curl pftop dnscrypt-proxy
+pkg_add rsync-3.1.1 git curl pftop
 
 # Fetch this repository
 mkdir src
@@ -34,5 +34,11 @@ rm install.sh
 
 # Finish
 . ./.profile
-echo "Setup complete. Make sure to run script/update to update your source tree."
+
+cd src/routinator
+make
+./configurator
+cp etc/* /etc
+
+echo "Installation and setup complete. Reboot for all changes to take effect."
 
