@@ -159,15 +159,29 @@ void write_internal_hostname_file()
   TMPL_free_varlist(mylist);
 }
 
+void write_rc_conf_local()
+{
+  TMPL_varlist *mylist;
+  FILE *rcconflocal;
+
+  rcconflocal = fopen("etc/rc.conf.local", "w+");
+
+  mylist = TMPL_add_var(0, "dhcp_if", dhcp_if, 0);
+
+  TMPL_write("templates/rc.conf.local.tmpl", 0, 0, mylist, rcconflocal, stderr);
+  TMPL_free_varlist(mylist);
+}
+
 int main(int argc, char **argv)
 {
-  struct ifaddrs *ifap;
+  struct ifaddrs *ifap = NULL;
 
   assign_interfaces(ifap);
   write_pf_conf();
 
   assign_dhcp_options();
   write_dhcpd_conf();
+  write_rc_conf_local();
 
   write_internal_hostname_file();
 

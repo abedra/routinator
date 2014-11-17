@@ -1,0 +1,2 @@
+ntpd_flags=""
+dhcpd_flags="em1"
