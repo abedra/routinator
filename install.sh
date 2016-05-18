@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Setup PKG_PATH
-export PKG_PATH=ftp://ftp.openbsd.org/pub/OpenBSD/5.9/packages/amd64
+export PKG_PATH=http://mirrors.gigenet.com/pub/OpenBSD/5.9/packages/amd64
 
 # Install essentials
 pkg_add rsync-3.1.2 git curl pftop
@@ -18,8 +18,8 @@ cp ~/src/routinator/home/.profile ~/.profile
 
 # Fetch the OpenBSD Sources
 cd /usr/src
-curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.9/src.tar.gz
-curl -O ftp://ftp.openbsd.org/pub/OpenBSD/5.9/sys.tar.gz
+curl -O http://mirrors.gigenet.com/pub/OpenBSD/5.9/src.tar.gz
+curl -O http://mirrors.gigenet.com/OpenBSD/5.9/sys.tar.gz
 
 # Extract Sources
 tar xzf src.tar.gz
@@ -30,15 +30,15 @@ rm src.tar.gz
 rm sys.tar.gz
 
 cd ~
-rm install.sh
+# rm install.sh
 
 # Finish
 . ./.profile
 
-cd src/routinator
-make
-./configurator
-cp etc/* /etc
+# cd src/routinator
+# make
+# ./configurator
+# cp etc/* /etc
 
 echo "Installation and setup complete. Reboot for all changes to take effect."
 
