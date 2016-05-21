@@ -1,0 +1,15 @@
+{
+  "version" : "5.9",
+  "arch"    : "amd64",
+  "internal_interface" : "em0",
+  "external_interface" : "em1",
+  "dhcp_interface"     : "em0",
+  "domain_name" : "routinator.local",
+  "nameservers" : ["8.8.8.8", "8.8.4.4"],
+  "router"      : "10.0.1.1",
+  "subnet"      : "10.0.1.0",
+  "netmask"     : "255.255.255.0",
+  "dhcp_start"  : "10.0.1.50",
+  "dhcp_end"    : "10.0.1.100",
+  "broadcast"   : "10.0.1.255"
+}

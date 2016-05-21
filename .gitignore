@@ -3,3 +3,5 @@ pf.conf
 dhcpd.conf
 cov-int
 routinator.tar.gz
+routinator
+out
