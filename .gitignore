@@ -1,2 +1,5 @@
 routinator
 out
+/routinator_openbsd_386
+/routinator_openbsd_amd64
+/templates.tar.gz
