@@ -82,12 +82,24 @@ func move(in, out string) {
 	err := os.Rename(in, out)
 	if err != nil {
 		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+}
+
+func makeExecutable(file string) {
+	err := os.Chmod(file, 0755)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
 }
 
 func moveConfigs(config Configuration) {
 	move("out/home/.profile", "/root/.profile")
 	move("out/home/bin", "/root/bin")
+	makeExecutable("/root/bin/update")
+	makeExecutable("/root/bin/recompile_kernel")
+	makeExecutable("/root/bin/recompile_system")
 	move("out/etc/pf.conf", "/etc/pf.conf")
 	move("out/etc/rc.conf.local", "/etc/rc.conf.local")
 	move("out/etc/hostname."+config.ExternalInterface, "/etc/hostname."+config.ExternalInterface)

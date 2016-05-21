@@ -28,11 +28,13 @@ echo "Downloading routinator program"
 mkdir setup
 cd setup
 
-curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.1/routinator
+curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.1/routinator_openbsd_amd64
 curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.1/firewall.example.json
 curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.1/templates.tar.gz
 
-tar xvzf templates.tar.gz
+chmod +x routinator_openbsd_amd64
+
+tar xzf templates.tar.gz > /dev/null 2>&1
 
 cd ~
 
