@@ -61,16 +61,7 @@ func writeConfig(config Configuration, inputPath string, outputPath string) {
 	t.Execute(outFile, config)
 }
 
-func main() {
-	configPtr := flag.String("config", "firewall.example.json", "Path to config file")
-	flag.Parse()
-
-	config := readConfiguration(*configPtr)
-	config.NameserversString = strings.Join(config.Nameservers, ", ")
-	config.VersionString = strings.Join(strings.Split(config.Version, "."), "_")
-
-	createOutputDirectories()
-
+func writeConfigs(config Configuration) {
 	writeConfig(config, "templates/pf.conf.tmpl", "out/etc/pf.conf")
 	writeConfig(config, "templates/rc.conf.local.tmpl", "out/etc/rc.conf.local")
 	writeConfig(config, "templates/ext_hostname.tmpl", "out/etc/hostname."+config.ExternalInterface)
@@ -81,4 +72,16 @@ func main() {
 	writeConfig(config, "templates/recompile_kernel.tmpl", "out/home/bin/recompile_kernel")
 	writeConfig(config, "templates/recompile_system.tmpl", "out/home/bin/recompile_system")
 	writeConfig(config, "templates/.profile.tmpl", "out/home/.profile")
+}
+
+func main() {
+	configPtr := flag.String("config", "firewall.example.json", "Path to config file")
+	flag.Parse()
+
+	config := readConfiguration(*configPtr)
+	config.NameserversString = strings.Join(config.Nameservers, ", ")
+	config.VersionString = strings.Join(strings.Split(config.Version, "."), "_")
+
+	createOutputDirectories()
+	writeConfigs(config)
 }

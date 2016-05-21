@@ -6,16 +6,6 @@ export PKG_PATH=http://mirrors.gigenet.com/pub/OpenBSD/5.9/packages/amd64
 # Install essentials
 pkg_add rsync-3.1.2 git curl pftop
 
-# Fetch this repository
-mkdir src
-cd src
-git clone git://github.com/abedra/routinator
-cd ~
-
-# Install
-rm ~/.profile
-cp ~/src/routinator/home/.profile ~/.profile
-
 # Fetch the OpenBSD Sources
 cd /usr/src
 curl -O http://mirrors.gigenet.com/pub/OpenBSD/5.9/src.tar.gz
@@ -30,15 +20,12 @@ rm src.tar.gz
 rm sys.tar.gz
 
 cd ~
-# rm install.sh
+rm install.sh
 
-# Finish
-. ./.profile
+curl -O https://github.com/abedra/routinator/releases/download/0.0.1/routinator
+curl -O https://github.com/abedra/routinator/releases/download/0.0.1/firewall.example.json
 
-# cd src/routinator
-# make
-# ./configurator
-# cp etc/* /etc
+./routinator
 
 echo "Installation and setup complete. Reboot for all changes to take effect."
 
