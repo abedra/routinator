@@ -48,7 +48,7 @@ func createOutputDirectories() {
 		os.Exit(1)
 	}
 
-	err = os.MkdirAll("out/home", 0755)
+	err = os.MkdirAll("out/home/bin", 0755)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -77,8 +77,8 @@ func main() {
 	writeConfig(config, "templates/int_hostname.tmpl", "out/etc/hostname."+config.InternalInterface)
 	writeConfig(config, "templates/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
 	writeConfig(config, "templates/sysctl.conf.tmpl", "out/etc/sysctl.conf")
-	writeConfig(config, "templates/update.tmpl", "out/home/update")
-	writeConfig(config, "templates/recompile_kernel.tmpl", "out/home/recompile_kernel")
-	writeConfig(config, "templates/recompile_system.tmpl", "out/home/recompile_system")
+	writeConfig(config, "templates/update.tmpl", "out/home/bin/update")
+	writeConfig(config, "templates/recompile_kernel.tmpl", "out/home/bin/recompile_kernel")
+	writeConfig(config, "templates/recompile_system.tmpl", "out/home/bin/recompile_system")
 	writeConfig(config, "templates/.profile.tmpl", "out/home/.profile")
 }
