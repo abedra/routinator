@@ -12,6 +12,7 @@ import (
 
 type Configuration struct {
 	Version           string
+	VersionString     string
 	Arch              string
 	InternalInterface string `json:"internal_interface"`
 	ExternalInterface string `json:"external_interface"`
@@ -42,6 +43,12 @@ func readConfiguration(configFile string) Configuration {
 
 func createOutputDirectories() {
 	err := os.MkdirAll("out/etc", 0755)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	err = os.MkdirAll("out/home", 0755)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
@@ -78,20 +85,47 @@ func writeDHCPConf(config Configuration) {
 	t.Execute(dhcpConf, config)
 }
 
+func writeSysctlConf(config Configuration) {
+	sysctlConf, _ := os.Create("out/etc/sysctl.conf")
+	t, _ := template.ParseFiles("templates/sysctl.conf.tmpl")
+	t.Execute(sysctlConf, config)
+}
+
+func writeUpdateScript(config Configuration) {
+	updateScript, _ := os.Create("out/home/update")
+	t, _ := template.ParseFiles("templates/update.tmpl")
+	t.Execute(updateScript, config)
+}
+
+func writeRecompileKernel(config Configuration) {
+	recompileKernelScript, _ := os.Create("out/home/recompile_kernel")
+	t, _ := template.ParseFiles("templates/recompile_kernel.tmpl")
+	t.Execute(recompileKernelScript, config)
+}
+
+func writeRecompileSystem(config Configuration) {
+	recompileSystemScript, _ := os.Create("out/home/recompile_system")
+	t, _ := template.ParseFiles("templates/recompile_system.tmpl")
+	t.Execute(recompileSystemScript, config)
+}
+
 func main() {
 	configPtr := flag.String("config", "firewall.example.json", "Path to config file")
 	flag.Parse()
 
 	config := readConfiguration(*configPtr)
 	config.NameserversString = strings.Join(config.Nameservers, ", ")
+	config.VersionString = strings.Join(strings.Split(config.Version, "."), "_")
 
 	createOutputDirectories()
 
 	writePfConf(config)
 	writeRcConfLocal(config)
-
 	writeInternalInterface(config)
 	writeExternalInterface(config)
-
 	writeDHCPConf(config)
+	writeSysctlConf(config)
+	writeUpdateScript(config)
+	writeRecompileKernel(config)
+	writeRecompileSystem(config)
 }

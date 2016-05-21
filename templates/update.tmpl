@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd /usr/src
+cvs -d$CVSROOT -q up -rOPENBSD_{{ .VersionString }} -Pd
+cd ~
