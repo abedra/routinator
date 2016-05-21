@@ -17,14 +17,14 @@ type Configuration struct {
 	InternalInterface string `json:"internal_interface"`
 	ExternalInterface string `json:"external_interface"`
 	DHCPInterface     string `json:"dhcp_interface"`
+	DHCPStart         string `json:"dhcp_start"`
+	DHCPEnd           string `json:"dhcp_end"`
 	DomainName        string `json:"domain_name"`
 	Nameservers       []string
 	NameserversString string
 	Router            string
 	Subnet            string
 	Netmask           string
-	DHCPStart         string `json:"dhcp_start"`
-	DHCPEnd           string `json:"dhcp_end"`
 	Broadcast         string
 }
 
@@ -55,58 +55,10 @@ func createOutputDirectories() {
 	}
 }
 
-func writePfConf(config Configuration) {
-	pfConf, _ := os.Create("out/etc/pf.conf")
-	t, _ := template.ParseFiles("templates/pf.conf.tmpl")
-	t.Execute(pfConf, config)
-}
-
-func writeRcConfLocal(config Configuration) {
-	rcConfLocal, _ := os.Create("out/etc/rc.conf.local")
-	t, _ := template.ParseFiles("templates/rc.conf.local.tmpl")
-	t.Execute(rcConfLocal, config)
-}
-
-func writeInternalInterface(config Configuration) {
-	internalInterface, _ := os.Create("out/etc/hostname." + config.InternalInterface)
-	t, _ := template.ParseFiles("templates/int_hostname.tmpl")
-	t.Execute(internalInterface, config)
-}
-
-func writeExternalInterface(config Configuration) {
-	externalInterface, _ := os.Create("out/etc/hostname." + config.ExternalInterface)
-	t, _ := template.ParseFiles("templates/ext_hostname.tmpl")
-	t.Execute(externalInterface, config)
-}
-
-func writeDHCPConf(config Configuration) {
-	dhcpConf, _ := os.Create("out/etc/dhcpd.conf")
-	t, _ := template.ParseFiles("templates/dhcpd.conf.tmpl")
-	t.Execute(dhcpConf, config)
-}
-
-func writeSysctlConf(config Configuration) {
-	sysctlConf, _ := os.Create("out/etc/sysctl.conf")
-	t, _ := template.ParseFiles("templates/sysctl.conf.tmpl")
-	t.Execute(sysctlConf, config)
-}
-
-func writeUpdateScript(config Configuration) {
-	updateScript, _ := os.Create("out/home/update")
-	t, _ := template.ParseFiles("templates/update.tmpl")
-	t.Execute(updateScript, config)
-}
-
-func writeRecompileKernel(config Configuration) {
-	recompileKernelScript, _ := os.Create("out/home/recompile_kernel")
-	t, _ := template.ParseFiles("templates/recompile_kernel.tmpl")
-	t.Execute(recompileKernelScript, config)
-}
-
-func writeRecompileSystem(config Configuration) {
-	recompileSystemScript, _ := os.Create("out/home/recompile_system")
-	t, _ := template.ParseFiles("templates/recompile_system.tmpl")
-	t.Execute(recompileSystemScript, config)
+func writeConfig(config Configuration, inputPath string, outputPath string) {
+	outFile, _ := os.Create(outputPath)
+	t, _ := template.ParseFiles(inputPath)
+	t.Execute(outFile, config)
 }
 
 func main() {
@@ -119,13 +71,14 @@ func main() {
 
 	createOutputDirectories()
 
-	writePfConf(config)
-	writeRcConfLocal(config)
-	writeInternalInterface(config)
-	writeExternalInterface(config)
-	writeDHCPConf(config)
-	writeSysctlConf(config)
-	writeUpdateScript(config)
-	writeRecompileKernel(config)
-	writeRecompileSystem(config)
+	writeConfig(config, "templates/pf.conf.tmpl", "out/etc/pf.conf")
+	writeConfig(config, "templates/rc.conf.local.tmpl", "out/etc/rc.conf.local")
+	writeConfig(config, "templates/ext_hostname.tmpl", "out/etc/hostname."+config.ExternalInterface)
+	writeConfig(config, "templates/int_hostname.tmpl", "out/etc/hostname."+config.InternalInterface)
+	writeConfig(config, "templates/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
+	writeConfig(config, "templates/sysctl.conf.tmpl", "out/etc/sysctl.conf")
+	writeConfig(config, "templates/update.tmpl", "out/home/update")
+	writeConfig(config, "templates/recompile_kernel.tmpl", "out/home/recompile_kernel")
+	writeConfig(config, "templates/recompile_system.tmpl", "out/home/recompile_system")
+	writeConfig(config, "templates/.profile.tmpl", "out/home/.profile")
 }
