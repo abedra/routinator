@@ -4,7 +4,7 @@
 # Default router:	{{ .Router }}
 # Addresses:		{{ .DHCPStart }} - {{ .DHCPEnd }}
 
-option  domain-name {{ .DomainName }};
+option  domain-name "{{ .DomainName }}";
 option  domain-name-servers {{ .NameserversString }};
 
 subnet {{ .Subnet }} netmask {{ .Netmask }} {
