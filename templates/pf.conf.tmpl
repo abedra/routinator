@@ -9,17 +9,17 @@ set loginterface $ext_if
 set skip on lo
 
 # match rules (NAT)
-match out on egress inet from !(egress) to any nat-to (egress:0)
+match out on egress inet from !(egress:network) to any nat-to (egress:0)
 
 # filter rules
 block in log
-pass out quick
+pass out quick inet
 
 antispoof quick for { lo $int_if }
 
 pass in on egress inet proto tcp from any to (egress) port $tcp_services
 pass in inet proto icmp all icmp-type $icmp_types
-pass in on $int_if
+pass in on $int_if inet
 
 # Example port forwarding rule
 # pass in on $ext_if proto tcp from any to $ext_if port 12345 rdr-to 10.0.0.2 port 22
