@@ -1,13 +1,13 @@
 # Network:		{{ .Subnet}}/{{ .Netmask }}
-# Domain name:		{{ .DomainName }}
+# Domain name:		{{ .DHCP.DomainName }}
 # Name servers:		{{ .NameserversString }}
 # Default router:	{{ .Router }}
-# Addresses:		{{ .DHCPStart }} - {{ .DHCPEnd }}
+# Addresses:		{{ .DHCP.Start }} - {{ .DHCP.End }}
 
-option  domain-name "{{ .DomainName }}";
+option  domain-name "{{ .DHCP.DomainName }}";
 option  domain-name-servers {{ .NameserversString }};
 
 subnet {{ .Subnet }} netmask {{ .Netmask }} {
 	option routers {{ .Router }};
-	range {{ .DHCPStart }} {{ .DHCPEnd }};
+	range {{ .DHCP.Start }} {{ .DHCP.End }};
 }

@@ -10,22 +10,34 @@ import (
 	"text/template"
 )
 
+type OperatingSystem struct {
+	Version string
+	Arch    string
+}
+
+type NetworkInterfaces struct {
+	Internal string
+	External string
+}
+
+type DHCPConfiguration struct {
+	Interface   string
+	Start       string
+	End         string
+	DomainName  string `json:"domain_name"`
+	Nameservers []string
+}
+
 type Configuration struct {
-	Version           string
-	VersionString     string
-	Arch              string
-	InternalInterface string `json:"internal_interface"`
-	ExternalInterface string `json:"external_interface"`
-	DHCPInterface     string `json:"dhcp_interface"`
-	DHCPStart         string `json:"dhcp_start"`
-	DHCPEnd           string `json:"dhcp_end"`
-	DomainName        string `json:"domain_name"`
-	Nameservers       []string
-	NameserversString string
+	OS                OperatingSystem   `json:"os"`
+	Interfaces        NetworkInterfaces `json:"interfaces"`
+	DHCP              DHCPConfiguration `json:"dhcp"`
 	Router            string
 	Subnet            string
 	Netmask           string
 	Broadcast         string
+	VersionString     string
+	NameserversString string
 }
 
 func readConfiguration(configFile string) Configuration {
@@ -68,8 +80,8 @@ func writeConfig(config Configuration, inputPath string, outputPath string) {
 func writeConfigs(config Configuration, templateDir string) {
 	writeConfig(config, templateDir+"/pf.conf.tmpl", "out/etc/pf.conf")
 	writeConfig(config, templateDir+"/rc.conf.local.tmpl", "out/etc/rc.conf.local")
-	writeConfig(config, templateDir+"/ext_hostname.tmpl", "out/etc/hostname."+config.ExternalInterface)
-	writeConfig(config, templateDir+"/int_hostname.tmpl", "out/etc/hostname."+config.InternalInterface)
+	writeConfig(config, templateDir+"/ext_hostname.tmpl", "out/etc/hostname."+config.Interfaces.External)
+	writeConfig(config, templateDir+"/int_hostname.tmpl", "out/etc/hostname."+config.Interfaces.Internal)
 	writeConfig(config, templateDir+"/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
 	writeConfig(config, templateDir+"/sysctl.conf.tmpl", "out/etc/sysctl.conf")
 	writeConfig(config, templateDir+"/update.tmpl", "out/home/bin/update")
@@ -102,8 +114,8 @@ func moveConfigs(config Configuration) {
 	makeExecutable("/root/bin/recompile_system")
 	move("out/etc/pf.conf", "/etc/pf.conf")
 	move("out/etc/rc.conf.local", "/etc/rc.conf.local")
-	move("out/etc/hostname."+config.ExternalInterface, "/etc/hostname."+config.ExternalInterface)
-	move("out/etc/hostname."+config.InternalInterface, "/etc/hostname."+config.InternalInterface)
+	move("out/etc/hostname."+config.Interfaces.External, "/etc/hostname."+config.Interfaces.External)
+	move("out/etc/hostname."+config.Interfaces.Internal, "/etc/hostname."+config.Interfaces.Internal)
 	move("out/etc/dhcpd.conf", "/etc/dhcpd.conf")
 	move("out/etc/sysctl.conf", "/etc/sysctl.conf")
 }
@@ -115,8 +127,8 @@ func main() {
 	flag.Parse()
 
 	config := readConfiguration(*configPtr)
-	config.NameserversString = strings.Join(config.Nameservers, ", ")
-	config.VersionString = strings.Join(strings.Split(config.Version, "."), "_")
+	config.NameserversString = strings.Join(config.DHCP.Nameservers, ", ")
+	config.VersionString = strings.Join(strings.Split(config.OS.Version, "."), "_")
 
 	createOutputDirectories()
 	writeConfigs(config, *templatePtr)

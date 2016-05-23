@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd /usr/src/sys/arch/{{ .Arch }}/conf
+cd /usr/src/sys/arch/{{ .OS.Arch }}/conf
 config GENERIC
 cd ../compile/GENERIC
 make clean && make depend && make && make install
