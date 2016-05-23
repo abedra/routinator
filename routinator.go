@@ -66,16 +66,16 @@ func writeConfig(config Configuration, inputPath string, outputPath string) {
 }
 
 func writeConfigs(config Configuration, templateDir string) {
-	writeConfig(config, templateDir + "/pf.conf.tmpl", "out/etc/pf.conf")
-	writeConfig(config, templateDir + "/rc.conf.local.tmpl", "out/etc/rc.conf.local")
-	writeConfig(config, templateDir + "/ext_hostname.tmpl", "out/etc/hostname."+config.ExternalInterface)
-	writeConfig(config, templateDir + "/int_hostname.tmpl", "out/etc/hostname."+config.InternalInterface)
-	writeConfig(config, templateDir + "/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
-	writeConfig(config, templateDir + "/sysctl.conf.tmpl", "out/etc/sysctl.conf")
-	writeConfig(config, templateDir + "/update.tmpl", "out/home/bin/update")
-	writeConfig(config, templateDir + "/recompile_kernel.tmpl", "out/home/bin/recompile_kernel")
-	writeConfig(config, templateDir + "/recompile_system.tmpl", "out/home/bin/recompile_system")
-	writeConfig(config, templateDir + "/.profile.tmpl", "out/home/.profile")
+	writeConfig(config, templateDir+"/pf.conf.tmpl", "out/etc/pf.conf")
+	writeConfig(config, templateDir+"/rc.conf.local.tmpl", "out/etc/rc.conf.local")
+	writeConfig(config, templateDir+"/ext_hostname.tmpl", "out/etc/hostname."+config.ExternalInterface)
+	writeConfig(config, templateDir+"/int_hostname.tmpl", "out/etc/hostname."+config.InternalInterface)
+	writeConfig(config, templateDir+"/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
+	writeConfig(config, templateDir+"/sysctl.conf.tmpl", "out/etc/sysctl.conf")
+	writeConfig(config, templateDir+"/update.tmpl", "out/home/bin/update")
+	writeConfig(config, templateDir+"/recompile_kernel.tmpl", "out/home/bin/recompile_kernel")
+	writeConfig(config, templateDir+"/recompile_system.tmpl", "out/home/bin/recompile_system")
+	writeConfig(config, templateDir+"/.profile.tmpl", "out/home/.profile")
 }
 
 func move(in, out string) {
@@ -111,6 +111,7 @@ func moveConfigs(config Configuration) {
 func main() {
 	configPtr := flag.String("config", "firewall.example.json", "Path to config file")
 	templatePtr := flag.String("templates", "templates", "Path to templates")
+	skipInstall := flag.Bool("skip-install", false, "Skip installation of config files")
 	flag.Parse()
 
 	config := readConfiguration(*configPtr)
@@ -119,5 +120,7 @@ func main() {
 
 	createOutputDirectories()
 	writeConfigs(config, *templatePtr)
-	moveConfigs(config)
+	if !*skipInstall {
+		moveConfigs(config)
+	}
 }
