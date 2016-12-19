@@ -11,3 +11,11 @@ subnet {{ .Subnet }} netmask {{ .Netmask }} {
 	option routers {{ .Router }};
 	range {{ .DHCP.Start }} {{ .DHCP.End }};
 }
+
+{{ range .DHCP.Assignments }}
+host {{ .Name }} {
+     hardware ethernet {{ .Mac }}
+     fixed-address {{ .Address }}
+     option host-name {{ .Name }}
+}
+{{ end }}

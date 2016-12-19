@@ -20,12 +20,19 @@ type NetworkInterfaces struct {
 	External string
 }
 
+type Assignment struct {
+	Name string
+	Mac  string
+	Address string
+}
+
 type DHCPConfiguration struct {
 	Interface   string
 	Start       string
 	End         string
 	DomainName  string `json:"domain_name"`
 	Nameservers []string
+	Assignments []Assignment
 }
 
 type Configuration struct {

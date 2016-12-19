@@ -12,7 +12,14 @@
     "domain_name" : "routinator.local",
     "nameservers" : ["8.8.8.8", "8.8.4.4"],
     "start"  : "10.0.1.50",
-    "end"    : "10.0.1.100"
+    "end"    : "10.0.1.100",
+    "assignments" : [
+      {
+	"name" : "example",
+	"mac" : "aa:aa:aa:aa:aa:aa",
+	"address" : "192.168.1.1"
+      }
+    ]
   },
   "router"      : "10.0.1.1",
   "subnet"      : "10.0.1.0",
