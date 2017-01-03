@@ -21,8 +21,8 @@ type NetworkInterfaces struct {
 }
 
 type Assignment struct {
-	Name string
-	Mac  string
+	Name    string
+	Mac     string
 	Address string
 }
 
@@ -35,10 +35,25 @@ type DHCPConfiguration struct {
 	Assignments []Assignment
 }
 
+type LocalData struct {
+	Name    string
+	Address string
+}
+
+type UnboundConfiguration struct {
+	Interfaces    []string
+	AccessControl []string    `json:"access_control"`
+	ForwardZones  []string    `json:"forward_zones"`
+	LocalZone     string      `json:"local_zone"`
+	ReverseZone   string      `json:"reverse_zone"`
+	LocalDatum    []LocalData `json:"local_data"`
+}
+
 type Configuration struct {
 	OS                OperatingSystem   `json:"os"`
 	Interfaces        NetworkInterfaces `json:"interfaces"`
 	DHCP              DHCPConfiguration `json:"dhcp"`
+	Unbound           UnboundConfiguration
 	Router            string
 	Subnet            string
 	Netmask           string
@@ -91,6 +106,7 @@ func writeConfigs(config Configuration, templateDir string) {
 	writeConfig(config, templateDir+"/int_hostname.tmpl", "out/etc/hostname."+config.Interfaces.Internal)
 	writeConfig(config, templateDir+"/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
 	writeConfig(config, templateDir+"/sysctl.conf.tmpl", "out/etc/sysctl.conf")
+	writeConfig(config, templateDir+"/unbound.conf.tmpl", "out/etc/unbound.conf")
 	writeConfig(config, templateDir+"/update.tmpl", "out/home/bin/update")
 	writeConfig(config, templateDir+"/recompile_kernel.tmpl", "out/home/bin/recompile_kernel")
 	writeConfig(config, templateDir+"/recompile_system.tmpl", "out/home/bin/recompile_system")
@@ -125,6 +141,7 @@ func moveConfigs(config Configuration) {
 	move("out/etc/hostname."+config.Interfaces.Internal, "/etc/hostname."+config.Interfaces.Internal)
 	move("out/etc/dhcpd.conf", "/etc/dhcpd.conf")
 	move("out/etc/sysctl.conf", "/etc/sysctl.conf")
+	move("out/etc/unbound.conf", "/var/unbound/etc/unbound.conf")
 }
 
 func main() {

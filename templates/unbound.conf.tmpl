@@ -1,0 +1,41 @@
+server:
+	{{- range .Unbound.Interfaces }}
+	interface: {{ . }}
+	{{- end }}
+
+        access-control: 0.0.0.0/0 refuse
+        access-control: ::0/0 refuse
+        access-control: ::1 allow
+
+	{{- range .Unbound.AccessControl }}
+	access-control: {{ . }} allow
+	{{- end }}
+
+        verbosity: 1
+
+        hide-identity: yes
+        hide-version: yes
+
+	local-zone "{{ .Unbound.LocalZone }}" static
+
+	{{- range .Unbound.LocalDatum }}
+	local-data: "{{ .Name }} IN A {{ .Address }}"
+	{{- end }}
+
+ 	{{- range .Unbound.LocalDatum }}
+	local-data-ptr: "{{ .Address }} {{ .Name }}"
+	{{- end }}
+
+	local-zone: "{{ .Unbound.ReverseZone }}" static
+
+remote-control:
+        control-enable: yes
+        control-use-cert: no
+        control-interface: /var/run/unbound.sock
+
+forward-zone:
+        name: "."                               # use for ALL queries
+	{{- range .Unbound.ForwardZones }}
+	forward-addr: {{ . }}
+	{{- end }}
+        forward-first: yes                      # try direct if forwarder fails
