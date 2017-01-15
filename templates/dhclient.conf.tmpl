@@ -1,0 +1,5 @@
+initial-interval 1;
+send host-name "{{ .DHCP.Client.Name }}";
+supersede domain-name-servers {{- range .DHCP.Client.DomainNameServers }} {{ . }} {{- end }};
+supersede domain-name "{{ .DHCP.Client.DomainName }}";
+request subnet-mask, broadcast-address, routers;

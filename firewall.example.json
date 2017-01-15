@@ -19,7 +19,14 @@
 	"mac" : "aa:aa:aa:aa:aa:aa",
 	"address" : "10.0.1.10"
       }
-    ]
+    ],
+    "client" : {
+      "name" : "routinator",
+      "domain_name" : "",
+      "domain_name_servers" : [
+	"10.0.1.1"
+      ]
+    }
   },
   "unbound" : {
     "interfaces" : [

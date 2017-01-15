@@ -26,6 +26,12 @@ type Assignment struct {
 	Address string
 }
 
+type DHCPClient struct {
+	Name              string
+	DomainName        string   `json:"domain_name"`
+	DomainNameServers []string `json:"domain_name_servers"`
+}
+
 type DHCPConfiguration struct {
 	Interface   string
 	Start       string
@@ -33,6 +39,7 @@ type DHCPConfiguration struct {
 	DomainName  string `json:"domain_name"`
 	Nameservers []string
 	Assignments []Assignment
+	Client      DHCPClient
 }
 
 type LocalData struct {
@@ -106,6 +113,7 @@ func writeConfigs(config Configuration, templateDir string) {
 	writeConfig(config, templateDir+"/ext_hostname.tmpl", "out/etc/hostname."+config.Interfaces.External)
 	writeConfig(config, templateDir+"/int_hostname.tmpl", "out/etc/hostname."+config.Interfaces.Internal)
 	writeConfig(config, templateDir+"/myname.tmpl", "out/etc/myname")
+	writeConfig(config, templateDir+"/dhclient.conf.tmpl", "out/etc/dhclient.conf")
 	writeConfig(config, templateDir+"/dhcpd.conf.tmpl", "out/etc/dhcpd.conf")
 	writeConfig(config, templateDir+"/sysctl.conf.tmpl", "out/etc/sysctl.conf")
 	writeConfig(config, templateDir+"/unbound.conf.tmpl", "out/etc/unbound.conf")
@@ -145,6 +153,7 @@ func moveConfigs(config Configuration) {
 	move("out/etc/sysctl.conf", "/etc/sysctl.conf")
 	move("out/etc/unbound.conf", "/var/unbound/etc/unbound.conf")
 	move("out/etc/myname", "/etc/myname")
+	move("out/etc/dhclient.conf", "/etc/dhclient.conf")
 }
 
 func main() {
