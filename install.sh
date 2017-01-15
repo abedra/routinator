@@ -5,7 +5,7 @@ export PKG_PATH=http://mirrors.gigenet.com/pub/OpenBSD/6.0/packages/amd64
 
 # Install essentials
 echo "Installing necessary packages"
-pkg_add git curl pftop unbound > /dev/null 2>&1
+pkg_add git curl pftop > /dev/null 2>&1
 
 # Fetch the OpenBSD Sources
 echo "Downloading src and sys"
