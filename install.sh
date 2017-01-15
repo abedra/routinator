@@ -5,7 +5,7 @@ export PKG_PATH=http://mirrors.gigenet.com/pub/OpenBSD/6.0/packages/amd64
 
 # Install essentials
 echo "Installing necessary packages"
-pkg_add rsync git curl pftop unbound > /dev/null 2>&1
+pkg_add git curl pftop unbound > /dev/null 2>&1
 
 # Fetch the OpenBSD Sources
 echo "Downloading src and sys"
@@ -28,9 +28,9 @@ echo "Downloading routinator program"
 mkdir setup
 cd setup
 
-curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.3/routinator_openbsd_amd64
-curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.3/firewall.example.json
-curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.3/templates.tar.gz
+curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.4/routinator_openbsd_amd64
+curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.4/firewall.example.json
+curl -O -L -s https://github.com/abedra/routinator/releases/download/0.0.4/templates.tar.gz
 
 chmod +x routinator_openbsd_amd64
 
