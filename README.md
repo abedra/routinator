@@ -23,7 +23,7 @@ rest.
 Once you have OpenBSD installed, run the following commands:
 
 ```sh
-$ ftp https://github.com/abedra/routinator/releases/download/0.0.3/install.sh
+$ ftp https://github.com/abedra/routinator/releases/download/0.0.4/install.sh
 $ sh install.sh
 ```
 
