@@ -64,5 +64,6 @@
   "router"      : "10.0.1.1",
   "subnet"      : "10.0.1.0",
   "netmask"     : "255.255.255.0",
-  "broadcast"   : "10.0.1.255"
+  "broadcast"   : "10.0.1.255",
+  "myname"      : "routinator.local"
 }
